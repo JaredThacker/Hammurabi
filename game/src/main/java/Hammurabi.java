@@ -20,7 +20,7 @@ public class Hammurabi {
     int grainDestroyedByRats;
     int acresToPlant;
     int plagueDeaths;
-    int totalPop = 100;
+    int totalPop = people;
     boolean gameOn = true;
 
     public static void main(String[] args) {
@@ -48,6 +48,7 @@ public class Hammurabi {
                 year++;
                 if (year == 11) {
                     finalSummary();
+                    gameOn = false;
                 }
             } while (year <= 10);
         }
@@ -198,7 +199,7 @@ public class Hammurabi {
                 "Land is currently worth " + price + " bushels per acre.\n");
     }
 
-    public String finalSummary(){
+    public void finalSummary(){
         int percentDied = totalPop/totalDeaths;
         String finalSum = "In your 10 year term in office " + percentDied + " percent of the population starved\n" +
                 " A total of " + totalDeaths + " people died\n" + "You started with 10 acres per capita and ended with " +
@@ -212,7 +213,6 @@ public class Hammurabi {
         } else {
             finalSum += "\nYou did a fantastic job, Congratulations!";
         }
-        gameOn = false;
-        return finalSum;
+        System.out.println(finalSum);
     }
 }
