@@ -11,7 +11,7 @@ public class Hammurabi {
     int bushelStash = 2800;
     int acres = 1000;
     int price = 19;
-    int year = 0;
+    int year = 1;
     int totalDeaths;
     int deathsByStarvation;
     int immigrants = 5;
