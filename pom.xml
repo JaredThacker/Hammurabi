@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
     <name>Hammurabi</name>
+    <modules>
+        <module>game</module>
+    </modules>
+
     <artifactId>Hammurabi</artifactId>
     <groupId>rocks.zipcode</groupId>
     <version>1.0.0-SNAPSHOT</version>
