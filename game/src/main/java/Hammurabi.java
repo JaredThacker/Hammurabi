@@ -140,6 +140,7 @@ public class Hammurabi {
         if (howManyPeopleStarved > pop) {
             gameOn = false;
             System.out.println("Too many people starved\n The people have now revolted\n You Lose.\n");
+            year = 11;
             return true;
         }
         return false;
