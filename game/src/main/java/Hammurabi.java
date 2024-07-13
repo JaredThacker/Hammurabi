@@ -20,6 +20,7 @@ public class Hammurabi {
     int grainDestroyedByRats;
     int acresToPlant;
     int plagueDeaths;
+    int percentDied;
     boolean gameOn = true;
 
     public static void main(String[] args) {
@@ -27,24 +28,29 @@ public class Hammurabi {
     }
 
     void playGame() {
-        do{
-            printSummary();
-            askHowManyAcresToBuy(price, bushelStash);
-            askHowManyAcresToSell(acres);
-            int grainToFeed = askHowMuchGrainToFeedPeople(bushelStash);
-            this.acresToPlant = askHowManyAcresToPlant(acres, people, bushelStash);
-            this.plagueDeaths = plagueDeaths(people);
-            this.deathsByStarvation = starvationDeaths(people,grainToFeed);
-            uprising(people, deathsByStarvation);
-            immigrants = (deathsByStarvation == 0) ? immigrants(people, acres, bushelStash) : 0;
-            this.harvestAmount = harvest(acres);
-            this.grainDestroyedByRats = grainEatenByRats(bushelStash);
-            newCostOfLand();
-            printReport();
-            totalDeaths += plagueDeaths;
-            totalDeaths += deathsByStarvation;
-            year++;
-        } while (year <= 10);
+        while(gameOn) {
+            do {
+                printSummary();
+                askHowManyAcresToBuy(price, bushelStash);
+                askHowManyAcresToSell(acres);
+                int grainToFeed = askHowMuchGrainToFeedPeople(bushelStash);
+                this.acresToPlant = askHowManyAcresToPlant(acres, people, bushelStash);
+                this.plagueDeaths = plagueDeaths(people);
+                this.deathsByStarvation = starvationDeaths(people, grainToFeed);
+                uprising(people, deathsByStarvation);
+                immigrants = (deathsByStarvation == 0) ? immigrants(people, acres, bushelStash) : 0;
+                this.harvestAmount = harvest(acresToPlant);
+                this.grainDestroyedByRats = grainEatenByRats(bushelStash);
+                newCostOfLand();
+                printReport();
+                totalDeaths += plagueDeaths;
+                totalDeaths += deathsByStarvation;
+                year++;
+                if (year == 11) {
+                    finalSummary();
+                }
+            } while (year <= 10);
+        }
     }
 
     public int askHowManyAcresToBuy(int price, int bushels){
@@ -79,12 +85,13 @@ public class Hammurabi {
 
     public int askHowMuchGrainToFeedPeople(int bushels){
         while(true) {
+            System.out.println("Each person needs 20 bushels to survive! You currently have " + bushelStash + " bushels and " + people + " people.");
             int grainToFeed = getNumber("How much grain do you wanna feed your people?? \n");
             if (grainToFeed > bushels){
                 System.out.println("You only have " + bushelStash + " pick a different amount");
             } else {
                 bushelStash -= grainToFeed;
-                System.out.println("\nThank you for feeding the people " + grainToFeed + " bushels of grain you currently have " + bushelStash + " bushels left\n");
+                System.out.println("\nThank you for feeding the people " + grainToFeed + " bushels of grain you now have " + bushelStash + " bushels left\n");
                 return grainToFeed;
             }
         }
@@ -92,14 +99,14 @@ public class Hammurabi {
 
     public int askHowManyAcresToPlant(int acresOwned, int population, int bushels){
         while(true){
-//            System.out.println("Each person needs 20 bushels, each person can farm 10 acres, it takes 2 bushels of grain to farm an acre ");
-//            System.out.println("You have " + acres + " acres " + people + " people and " + bushelStash + " bushels");
+            System.out.println("Each person can farm 10 acres and consume 2 bushels per farming acre");
+            System.out.println("You have " + acres + " acres " + people + " people and " + bushelStash + " bushels currently\n");
             int acresToPlant = getNumber("How many acres do you wanna plant?? \n");
             int bushelsNeeded = acresToPlant * 2;
             int peopleNeeded = acresToPlant / 10;
                 if (acresOwned >= acresToPlant && population >= peopleNeeded && bushels >= bushelsNeeded) {
                     bushelStash -= bushelsNeeded;
-                    System.out.println("You have " + bushelStash + " bushels left\n");
+                    System.out.println("You now have " + bushelStash + " bushels left\n");
                     return acresToPlant;
                 } else {
                     System.out.println("You either do not have enough bushels, people or acres owned to plant this much! ");
@@ -110,11 +117,10 @@ public class Hammurabi {
         }
 
     public int plagueDeaths(int people) {
-        if (rand.nextInt(100) + 1 < 15) {
-            System.out.println("Half your people died from a plague\n");
-            deathsByStarvation += people/2;
-            people = people/2;
-            return people;
+        if (rand.nextInt(100) + 1 <= 15) {
+            System.out.println("!!!!!!!!!! Half your people died from a plague !!!!!!!!!!!!!!\n");
+            this.people = people/2;
+            return people/2;
         }
         return 0;
     }
@@ -151,14 +157,15 @@ public class Hammurabi {
 
     public int harvest(int acres) {
         this.yield = rand.nextInt(6) + 1;
-        bushelStash += acresToPlant * yield;
-        return acresToPlant * yield;
+        this.bushelStash += acres * yield;
+        return acres * yield;
     }
 
     public int grainEatenByRats(int bushels) {
         int random = rand.nextInt(100) + 1;
         if (random < 40) {
             double ratChance = rand.nextInt(21) + 10;
+            this.bushelStash -= (int) (bushels * ratChance / 100);
             return (int) (bushels * ratChance / 100);
         }
         return 0;
@@ -198,7 +205,11 @@ public class Hammurabi {
     }
 
     public String finalSummary(){
-        return null;
+        String finalSum = "In your 10 year term in office " + percentDied + " percent of the population starved\n" +
+                " A total of " + totalDeaths + " people died\n" + "You started with 10 acres per capita and ended with " +
+                acres/people + " acres per capita";
+        gameOn = false;
+        return finalSum;
     }
 
 }
