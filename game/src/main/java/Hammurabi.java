@@ -24,7 +24,6 @@ public class Hammurabi {
     int totalPop = people;
     int totalHarvest;
     int totalBushels;
-    int totalAcreage;
     boolean gameOn = true;
 
     public static void main(String[] args) {
@@ -50,7 +49,6 @@ public class Hammurabi {
                 totalDeaths += plagueDeaths;
                 totalDeaths += deathsByStarvation;
                 totalDeathsByStarvation += deathsByStarvation;
-                totalAcreage += acres;
                 totalBushels += bushelStash;
                 totalHarvest += harvestAmount;
                 year++;
@@ -209,8 +207,8 @@ public class Hammurabi {
 
     public void finalSummary(){
         int percentDied = (totalDeathsByStarvation == 0) ? 0 : totalPop/totalDeathsByStarvation;
-        String finalSum = "Throughout your tenure you amassed " + totalBushels + " bushels, harvested " + totalHarvest +
-                " from your farms and flipped " + totalAcreage + " acres in total! \n" +
+        String finalSum = "Throughout your tenure you amassed " + totalBushels + " bushels and harvested " + totalHarvest +
+                " from your farms!\n" +
                 " In your 10 year term in office " + percentDied + " percent of the population starved\n" +
                 " A total of " + totalDeaths + " people died\n" + "You started with 10 acres per capita and ended with " +
                 acres/people + " acres per capita\n";
