@@ -22,6 +22,9 @@ public class Hammurabi {
     int plagueDeaths;
     int totalDeathsByStarvation;
     int totalPop = people;
+    int totalHarvest;
+    int totalBushels;
+    int totalAcreage;
     boolean gameOn = true;
 
     public static void main(String[] args) {
@@ -47,6 +50,9 @@ public class Hammurabi {
                 totalDeaths += plagueDeaths;
                 totalDeaths += deathsByStarvation;
                 totalDeathsByStarvation += deathsByStarvation;
+                totalAcreage += acres;
+                totalBushels += bushelStash;
+                totalHarvest += harvestAmount;
                 year++;
                 if (year == 11) {
                     finalSummary();
@@ -104,7 +110,7 @@ public class Hammurabi {
         while(true){
             System.out.println("Each person can farm 10 acres and consume 2 bushels per farming acre");
             System.out.println("You have " + acres + " acres " + people + " people and " + bushelStash + " bushels currently\n");
-            int acresToPlant = getNumber("How many acres do you wanna plant?? \n");
+            int acresToPlant = getNumber("How many acres do you wish to plant with seed?? \n");
             int bushelsNeeded = acresToPlant * 2;
             int peopleNeeded = acresToPlant / 10;
                 if (acresOwned >= acresToPlant && population >= peopleNeeded && bushels >= bushelsNeeded) {
@@ -202,8 +208,10 @@ public class Hammurabi {
     }
 
     public void finalSummary(){
-        int percentDied = totalPop/totalDeathsByStarvation;
-        String finalSum = "In your 10 year term in office " + percentDied + " percent of the population starved\n" +
+        int percentDied = (totalDeathsByStarvation == 0) ? 0 : totalPop/totalDeathsByStarvation;
+        String finalSum = "Throughout your tenure you amassed " + totalBushels + " bushels, harvested " + totalHarvest +
+                " from your farms and flipped " + totalAcreage + " acres in total! \n" +
+                " In your 10 year term in office " + percentDied + " percent of the population starved\n" +
                 " A total of " + totalDeaths + " people died\n" + "You started with 10 acres per capita and ended with " +
                 acres/people + " acres per capita\n";
         if (percentDied > 33 || acres/people < 7){
