@@ -28,10 +28,6 @@ public class Hammurabi {
                 askHowManyAcresToSell(acres);
                 askHowMuchGrainToFeedPeople(bushelStash);
                 askHowManyAcresToPlant(acres, people, bushelStash);
-//                plagueDeaths(people);
-//                starvationDeaths(people, grainToFeed);
-//                uprising(people, 0);
-//                immigrants(people, acres, bushelStash);
                 printReport();
             }
         } while (gameOn);
@@ -100,7 +96,7 @@ public class Hammurabi {
         }
 
     public int plagueDeaths(int people) {
-        int random = rand.nextInt(101);
+        int random = rand.nextInt(100) + 1;
         if (random < 15) {
             System.out.println("Half your people died");
             people = people/2;
@@ -137,16 +133,24 @@ public class Hammurabi {
             return results;
     }
 
-    public int harvest(int i) {
-        return 0;
+    public int harvest(int acres) {
+        int random = rand.nextInt(6) + 1;
+        return acres * random;
     }
 
-    public int grainEatenByRats(int i) {
+    public int grainEatenByRats(int bushels) {
+        int random = rand.nextInt(100) + 1;
+        if (random < 40) {
+            double ratChance = rand.nextInt(21) + 10;
+            return (int) (bushels * ratChance / 100);
+        }
         return 0;
     }
 
     public int newCostOfLand() {
-        return 0;
+        int random = rand.nextInt(7) + 17;
+        price = random;
+        return price;
     }
 
     public int getNumber(String message) {
