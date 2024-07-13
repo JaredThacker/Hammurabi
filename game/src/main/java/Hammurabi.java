@@ -20,7 +20,7 @@ public class Hammurabi {
     int grainDestroyedByRats;
     int acresToPlant;
     int plagueDeaths;
-    int totalPop;
+    int totalPop = 100;
     boolean gameOn = true;
 
     public static void main(String[] args) {
@@ -42,7 +42,7 @@ public class Hammurabi {
                 this.harvestAmount = harvest(acresToPlant);
                 this.grainDestroyedByRats = grainEatenByRats(bushelStash);
                 newCostOfLand();
-                this.totalPop += people + immigrants;
+                this.totalPop += immigrants;
                 totalDeaths += plagueDeaths;
                 totalDeaths += deathsByStarvation;
                 year++;
