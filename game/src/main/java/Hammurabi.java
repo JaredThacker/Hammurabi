@@ -20,6 +20,7 @@ public class Hammurabi {
     int grainDestroyedByRats;
     int acresToPlant;
     int plagueDeaths;
+    int totalDeathsByStarvation;
     int totalPop = people;
     boolean gameOn = true;
 
@@ -45,6 +46,7 @@ public class Hammurabi {
                 this.totalPop += immigrants;
                 totalDeaths += plagueDeaths;
                 totalDeaths += deathsByStarvation;
+                totalDeathsByStarvation += deathsByStarvation;
                 year++;
                 if (year == 11) {
                     finalSummary();
@@ -200,7 +202,7 @@ public class Hammurabi {
     }
 
     public void finalSummary(){
-        int percentDied = totalPop/totalDeaths;
+        int percentDied = totalPop/totalDeathsByStarvation;
         String finalSum = "In your 10 year term in office " + percentDied + " percent of the population starved\n" +
                 " A total of " + totalDeaths + " people died\n" + "You started with 10 acres per capita and ended with " +
                 acres/people + " acres per capita\n";
