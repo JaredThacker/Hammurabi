@@ -20,7 +20,7 @@ public class Hammurabi {
     int grainDestroyedByRats;
     int acresToPlant;
     int plagueDeaths;
-    int percentDied;
+    int totalPop;
     boolean gameOn = true;
 
     public static void main(String[] args) {
@@ -42,7 +42,7 @@ public class Hammurabi {
                 this.harvestAmount = harvest(acresToPlant);
                 this.grainDestroyedByRats = grainEatenByRats(bushelStash);
                 newCostOfLand();
-                printReport();
+                this.totalPop += people + immigrants;
                 totalDeaths += plagueDeaths;
                 totalDeaths += deathsByStarvation;
                 year++;
@@ -86,12 +86,12 @@ public class Hammurabi {
     public int askHowMuchGrainToFeedPeople(int bushels){
         while(true) {
             System.out.println("Each person needs 20 bushels to survive! You currently have " + bushelStash + " bushels and " + people + " people.");
-            int grainToFeed = getNumber("How much grain do you wanna feed your people?? \n");
+            int grainToFeed = getNumber("How much grain do you wish to feed your people?? \n");
             if (grainToFeed > bushels){
                 System.out.println("You only have " + bushelStash + " pick a different amount");
             } else {
                 bushelStash -= grainToFeed;
-                System.out.println("\nThank you for feeding the people " + grainToFeed + " bushels of grain you now have " + bushelStash + " bushels left\n");
+                System.out.println("\nHow generous my lord! Thank you for feeding the people " + grainToFeed + " bushels of grain, you now have " + bushelStash + " bushels left\n");
                 return grainToFeed;
             }
         }
@@ -110,10 +110,8 @@ public class Hammurabi {
                     return acresToPlant;
                 } else {
                     System.out.println("You either do not have enough bushels, people or acres owned to plant this much! ");
-                    System.out.println("You have " + acres + " acres " + bushelStash + " bushels and " + people + " people\n");
                 }
             }
-
         }
 
     public int plagueDeaths(int people) {
@@ -128,7 +126,6 @@ public class Hammurabi {
     public int starvationDeaths(int people, int bushelsToFeed) {
         int grainsNeeded = people * 20;
         if (bushelsToFeed >= grainsNeeded){
-            bushelStash -= grainsNeeded;
             return 0;
         }
         int bushelShortage = grainsNeeded - bushelsToFeed;
@@ -200,16 +197,21 @@ public class Hammurabi {
                 "Land is currently worth " + price + " bushels per acre.\n");
     }
 
-    public void printReport(){
-
-    }
-
     public String finalSummary(){
+        int percentDied = totalPop/totalDeaths;
         String finalSum = "In your 10 year term in office " + percentDied + " percent of the population starved\n" +
                 " A total of " + totalDeaths + " people died\n" + "You started with 10 acres per capita and ended with " +
-                acres/people + " acres per capita";
+                acres/people + " acres per capita\n";
+        if (percentDied > 33 || acres/people < 7){
+            finalSum += "\nYou have failed your people.";
+        } else if (percentDied > 10 || acres/people < 9) {
+            finalSum += "\nThe remaining people find you an unpleasant ruler and detest you";
+        } else if (percentDied > 3 || acres/people < 10) {
+            finalSum += "\nYour performance wasn't all too bad but could have been better";
+        } else {
+            finalSum += "\nYou did a fantastic job, Congratulations!";
+        }
         gameOn = false;
         return finalSum;
     }
-
 }
