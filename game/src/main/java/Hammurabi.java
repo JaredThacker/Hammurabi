@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Hammurabi {
 
-    Random rand = new Random();
+    Random rand = new Random(System.currentTimeMillis());
     Scanner scanner = new Scanner(System.in);
 
     int people = 100;
@@ -63,14 +63,14 @@ public class Hammurabi {
     public int askHowManyAcresToBuy(int price, int bushels){
         while(true) {
             int acresBought = getNumber("How many acres do you wish to buy this year?? \n");
-            if (bushels <= price * acresBought){
+            if (bushels < price * acresBought){
                 System.out.println("You only have " + bushels + " please try a different amount");
             } else {
                 bushelStash -= price * acresBought;
                 acres += acresBought;
                 System.out.println("You now have " + bushelStash + " bushels left");
                 System.out.println("You now own " + acres + " acres of land\n");
-                return acres;
+                return acresBought;
             }
         }
     }
@@ -85,7 +85,7 @@ public class Hammurabi {
                 bushelStash += price * acresSold;
                 System.out.println("You now have " + bushelStash + " bushels left");
                 System.out.println("You now own " + acres + " acres of land\n");
-                return acres;
+                return acresSold;
             }
         }
     }
