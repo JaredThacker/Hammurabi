@@ -33,29 +33,7 @@ public class Hammurabi {
     void playGame() {
         while(gameOn) {
             do {
-                printSummary();
-                askHowManyAcresToBuy(price, bushelStash);
-                askHowManyAcresToSell(acres);
-                int grainToFeed = askHowMuchGrainToFeedPeople(bushelStash);
-                this.acresToPlant = askHowManyAcresToPlant(acres, people, bushelStash);
-                this.plagueDeaths = plagueDeaths(people);
-                this.deathsByStarvation = starvationDeaths(people, grainToFeed);
-                uprising(people, deathsByStarvation);
-                immigrants = (deathsByStarvation == 0) ? immigrants(people, acres, bushelStash) : 0;
-                this.harvestAmount = harvest(acresToPlant);
-                this.grainDestroyedByRats = grainEatenByRats(bushelStash);
-                newCostOfLand();
-                this.totalPop += immigrants;
-                totalDeaths += plagueDeaths;
-                totalDeaths += deathsByStarvation;
-                totalDeathsByStarvation += deathsByStarvation;
-                totalBushels += bushelStash;
-                totalHarvest += harvestAmount;
-                year++;
-                if (year == 11) {
-                    finalSummary();
-                    gameOn = false;
-                }
+                gameLogic();
             } while (year <= 10);
         }
     }
@@ -123,7 +101,7 @@ public class Hammurabi {
 
     public int plagueDeaths(int people) {
         if (rand.nextInt(100) + 1 <= 15) {
-            System.out.println("!!!!!!!!!! Half your people died from a plague !!!!!!!!!!!!!!\n");
+            System.out.println("!!!!!!!!!! Half your people died from a plague !!!!!!!!!!!!!!");
             this.people = people/2;
             return people/2;
         }
@@ -181,6 +159,40 @@ public class Hammurabi {
         return price;
     }
 
+    public void deathCount(){
+        totalDeaths += plagueDeaths;
+        totalDeaths += deathsByStarvation;
+        totalDeathsByStarvation += deathsByStarvation;
+    }
+
+    public void totalCount(){
+        this.totalPop += immigrants;
+        this.totalBushels += bushelStash;
+        this.totalHarvest += harvestAmount;
+    }
+
+    public void gameLogic(){
+        printSummary();
+        askHowManyAcresToBuy(price, bushelStash);
+        askHowManyAcresToSell(acres);
+        int grainToFeed = askHowMuchGrainToFeedPeople(bushelStash);
+        this.acresToPlant = askHowManyAcresToPlant(acres, people, bushelStash);
+        this.plagueDeaths = plagueDeaths(people);
+        this.deathsByStarvation = starvationDeaths(people, grainToFeed);
+        uprising(people, deathsByStarvation);
+        immigrants = (deathsByStarvation == 0) ? immigrants(people, acres, bushelStash) : 0;
+        this.harvestAmount = harvest(acresToPlant);
+        this.grainDestroyedByRats = grainEatenByRats(bushelStash);
+        newCostOfLand();
+        deathCount();
+        totalCount();
+        year++;
+        if (year == 11) {
+            finalSummary();
+            gameOn = false;
+        }
+    }
+
     public int getNumber(String message) {
         while (true) {
             System.out.print(message);
@@ -194,7 +206,7 @@ public class Hammurabi {
     }
 
     public void printSummary(){
-        System.out.println("O great Hammurabi!\n" +
+        System.out.println("\n============================================================\n" +
                 "You are in year " + year + " of your 10 year rule.\n" +
                 "In the previous year " + deathsByStarvation + " people starved to death.\n" +
                 "In the previous year " + immigrants + " people entered the kingdom.\n" +
@@ -202,7 +214,8 @@ public class Hammurabi {
                 "We harvested " + harvestAmount + " bushels at " + yield + " bushels per acre.\n" +
                 "Rats destroyed " + grainDestroyedByRats + " bushels, leaving " + bushelStash + " bushels in storage.\n" +
                 "The city owns " + acres + " acres of land.\n" +
-                "Land is currently worth " + price + " bushels per acre.\n");
+                "Land is currently worth " + price + " bushels per acre.\n" +
+                "============================================================\n");
     }
 
     public void finalSummary(){
@@ -212,7 +225,7 @@ public class Hammurabi {
                 " In your 10 year term in office " + percentDied + " percent of the population starved\n" +
                 " A total of " + totalDeaths + " people died\n" + "You started with 10 acres per capita and ended with " +
                 acres/people + " acres per capita\n";
-        if (percentDied > 33 || acres/people < 7){
+        if (percentDied > 33 || acres/people < 7) {
             finalSum += "\nYou have failed your people.";
         } else if (percentDied > 10 || acres/people < 9) {
             finalSum += "\nThe remaining people find you an unpleasant ruler and detest you";
